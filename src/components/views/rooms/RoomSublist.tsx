@@ -114,6 +114,11 @@ export default class RoomSublist extends React.Component<IProps, IState> {
         this.slidingSyncMode = SettingsStore.getValue("feature_sliding_sync");
 
         this.layout = RoomListLayoutStore.instance.getLayoutFor(this.props.tagId);
+        //tangoun
+        this.layout.showPreviews = true;  // Enable message previews by default
+        //tangoun
+        //this.onTagSortChanged(SortAlgorithm.Recent);  // Set default sort order to Recent
+        
         this.heightAtStart = 0;
         this.notificationState = RoomNotificationStateStore.instance.getListState(this.props.tagId);
         this.state = {
@@ -128,6 +133,7 @@ export default class RoomSublist extends React.Component<IProps, IState> {
     }
 
     private calculateInitialHeight(): number {
+        
         const requestedVisibleTiles = Math.max(Math.floor(this.layout.visibleTiles), this.layout.minVisibleTiles);
         const tileCount = Math.min(this.numTiles, requestedVisibleTiles);
         return this.layout.tilesToPixelsWithPadding(tileCount, this.padding);
@@ -706,9 +712,10 @@ export default class RoomSublist extends React.Component<IProps, IState> {
                                         <span className={collapseClasses} />
                                         <span id={getLabelId(this.props.tagId)}>{this.props.label}</span>
                                     </AccessibleButton>
-                                    {this.renderMenu()}
+                                    {/* tangoun */}
+                                    {/* {this.renderMenu()}
                                     {this.props.isMinimized ? null : badgeContainer}
-                                    {this.props.isMinimized ? null : addRoomButton}
+                                    {this.props.isMinimized ? null : addRoomButton} */}
                                 </div>
                             </div>
                             {this.props.isMinimized ? badgeContainer : null}
@@ -875,6 +882,7 @@ export default class RoomSublist extends React.Component<IProps, IState> {
                 aria-labelledby={getLabelId(this.props.tagId)}
                 onKeyDown={this.onKeyDown}
             >
+                {/* tangoun */}
                 {this.renderHeader()}
                 {content}
             </div>

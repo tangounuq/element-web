@@ -65,7 +65,8 @@ export default class RoomSearch extends React.PureComponent<IProps> {
                 {!this.props.isMinimized && (
                     <div className="mx_RoomSearch_spotlightTriggerText">{_t("action|search")}</div>
                 )}
-                {shortcutPrompt}
+                {/* tangoun */}
+                {/* {shortcutPrompt} */}
             </AccessibleButton>
         );
     }

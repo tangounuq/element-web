@@ -364,8 +364,9 @@ export default class LeftPanel extends React.Component<IProps, IState> {
             >
                 <RoomSearch isMinimized={this.props.isMinimized} />
 
-                {dialPadButton}
-                {rightButton}
+                {/* tangoun */}
+                {/* {dialPadButton} */}
+                {/* {rightButton} */}
             </div>
         );
     }
@@ -395,9 +396,12 @@ export default class LeftPanel extends React.Component<IProps, IState> {
         return (
             <div className={containerClasses}>
                 <div className="mx_LeftPanel_roomListContainer">
-                    {shouldShowComponent(UIComponent.FilterContainer) && this.renderSearchDialExplore()}
-                    {this.renderBreadcrumbs()}
                     {!this.props.isMinimized && <RoomListHeader onVisibilityChange={this.refreshStickyHeaders} />}
+                    {shouldShowComponent(UIComponent.FilterContainer) && this.renderSearchDialExplore()}  {/* tangoun - search over room list */}
+                    
+                    {/* tangoun - list contact horizontallly */}
+                    {/* {this.renderBreadcrumbs()} */}
+                   
                     <UserOnboardingButton
                         selected={this.props.pageType === PageType.HomePage}
                         minimized={this.props.isMinimized}
