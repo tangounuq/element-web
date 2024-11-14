@@ -6,19 +6,6 @@ SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only
 Please see LICENSE files in the repository root for full details.
 */
 
-//tangoun
-import UserIcon from "@vector-im/compound-design-tokens/icons/user.svg";
-import ChatIcon from "@vector-im/compound-design-tokens/icons/chat.svg";
-import FavouriteIcon from "@vector-im/compound-design-tokens/icons/favourite.svg";
-
-//import HomeIcon from "img/element-icons/home.svg";
-
-import SettingIcon from "@vector-im/compound-design-tokens/icons/settings.svg";
-import SpaceStore from "../../stores/spaces/SpaceStore";
-import { 
-    MetaSpace,   
-} from "../../stores/spaces";
-//tangoun
 import React, { ClipboardEvent } from "react";
 import {
     ClientEvent,
@@ -62,11 +49,10 @@ import LegacyCallHandler, { LegacyCallHandlerEvent } from "../../LegacyCallHandl
 import AudioFeedArrayForLegacyCall from "../views/voip/AudioFeedArrayForLegacyCall";
 import { OwnProfileStore } from "../../stores/OwnProfileStore";
 import { UPDATE_EVENT } from "../../stores/AsyncStore";
-import RoomView from "./RoomView";
-import type { RoomView as RoomViewType } from "./RoomView";
+import { RoomView } from "./RoomView";
 import ToastContainer from "./ToastContainer";
 import UserView from "./UserView";
-import BackdropPanel from "./BackdropPanel";
+import { BackdropPanel } from "./BackdropPanel";
 import { mediaFromMxc } from "../../customisations/Media";
 import { UserTab } from "../views/dialogs/UserTab";
 import { OpenToTabPayload } from "../../dispatcher/payloads/OpenToTabPayload";
@@ -81,10 +67,6 @@ import { monitorSyncedPushRules } from "../../utils/pushRules/monitorSyncedPushR
 import { ConfigOptions } from "../../SdkConfig";
 import { MatrixClientContextProvider } from "./MatrixClientContextProvider";
 import { Landmark, LandmarkNavigation } from "../../accessibility/LandmarkNavigation";
-
-// tangoun
-import AccessibleButton, { ButtonEvent } from "../views/elements/AccessibleButton";
-import { _t } from "../../languageHandler";
 
 // We need to fetch each pinned message individually (if we don't already have it)
 // so each pinned message may trigger a request. Limit the number per room for sanity.
@@ -142,7 +124,7 @@ class LoggedInView extends React.Component<IProps, IState> {
     public static displayName = "LoggedInView";
 
     protected readonly _matrixClient: MatrixClient;
-    protected readonly _roomView: React.RefObject<RoomViewType>;
+    protected readonly _roomView: React.RefObject<RoomView>;
     protected readonly _resizeContainer: React.RefObject<HTMLDivElement>;
     protected readonly resizeHandler: React.RefObject<HTMLDivElement>;
     protected layoutWatcherRef?: string;
@@ -678,25 +660,6 @@ class LoggedInView extends React.Component<IProps, IState> {
         this._roomView.current?.handleScrollKey(ev);
     };
 
-
-    //tangoun
-    private onSettingsClick = (): void => {
-        // Handle settings icon click, maybe navigate to settings page or open modal
-        dis.fire(Action.ViewUserSettings);
-    };
-
-    //tangoun
-    private onClickFavourite = (): void => {
-        SpaceStore.instance.setActiveSpace(MetaSpace.Favourites);
-    };
-    private onClickChat = (): void => {
-        SpaceStore.instance.setActiveSpace(MetaSpace.Home);
-    };
-    private onClickPeople = (): void => {
-        SpaceStore.instance.setActiveSpace(MetaSpace.People);
-    };
-
-
     public render(): React.ReactNode {
         let pageElement;
 
@@ -742,8 +705,6 @@ class LoggedInView extends React.Component<IProps, IState> {
             return <AudioFeedArrayForLegacyCall call={call} key={call.callId} />;
         });
 
-        
-
         return (
             <MatrixClientContextProvider client={this._matrixClient}>
                 <div
@@ -758,8 +719,7 @@ class LoggedInView extends React.Component<IProps, IState> {
                             <LeftPanelLiveShareWarning isMinimized={this.props.collapseLhs || false} />
                             <div className="mx_LeftPanel_wrapper">
                                 <BackdropPanel blurMultiplier={0.5} backgroundImage={this.state.backgroundImage} />
-                                {/* tangoun-Left menu panel  */}
-                                {/* <SpacePanel /> */}
+                                <SpacePanel />
                                 <BackdropPanel backgroundImage={this.state.backgroundImage} />
                                 <div
                                     className="mx_LeftPanel_wrapper--user"
@@ -771,72 +731,7 @@ class LoggedInView extends React.Component<IProps, IState> {
                                         isMinimized={this.props.collapseLhs || false}
                                         resizeNotifier={this.props.resizeNotifier}
                                     />
-                                    {/* tangoun */}
-                                    <div className="icon-bar">
-                                        
-                                        <AccessibleButton   
-                                            onClick={this.onClickPeople}
-                                            title={_t("common|go_to_settings")}
-                                        >
-                                            <img src={UserIcon} alt="Chat" className="icon-svg" />
-                                        </AccessibleButton>
-                                        
-                                        <AccessibleButton   
-                                            onClick={this.onClickFavourite}
-                                            title={_t("common|go_to_settings")}
-                                        >
-                                            <img src={FavouriteIcon} alt="Chat" className="icon-svg" />
-                                        </AccessibleButton>
-                                        
-                                        <AccessibleButton   
-                                            onClick={this.onClickChat}
-                                            title={_t("common|go_to_settings")}
-                                        >
-                                            <img src={ChatIcon} alt="Chat" className="icon-svg" />
-                                        </AccessibleButton>
-                                        
-                                        <AccessibleButton   
-                                            onClick={this.onSettingsClick}
-                                            title={_t("common|go_to_settings")}
-                                        >
-                                            <img src={SettingIcon} alt="User Icon" className="icon-svg" />
-                                        </AccessibleButton>
-
-                                    </div>
                                 </div>
-                                {/* Inline CSS Styles */}
-                                <style>
-                                    {`
-                                        .mx_LeftPanel_wrapper--user {
-                                            position: relative;
-                                            height: 100%; /* Ensures the panel takes full height */
-                                        }
-
-                                        .icon-bar {
-                                            position: absolute;
-                                            bottom: 0;
-                                            width: 100%; /* Ensures the icons span the panel width */
-                                            display: flex;
-                                            justify-content: space-evenly; /* Space icons evenly across the width */
-                                            padding: 10px 0;
-                                            background-color: white; /* Optional: Background color to match your design */
-                                        }
-
-                                        .icon-button {
-                                            background: none;
-                                            border: none;
-                                            outline: none;
-                                            cursor: pointer;
-                                            font-size: 24px; /* Adjust icon size */
-                                            color: gray;
-                                            transition: color 0.3s;
-                                        }
-
-                                        .icon-button:hover {
-                                            color: black;
-                                        }
-                                    `}
-                                </style>
                             </div>
                         </div>
                         <ResizeHandle passRef={this.resizeHandler} id="lp-resizer" />

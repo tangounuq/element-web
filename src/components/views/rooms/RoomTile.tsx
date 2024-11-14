@@ -428,7 +428,6 @@ export class RoomTile extends React.PureComponent<ClassProps, State> {
                     <span dir="auto">{name}</span>
                 </div>
                 {subtitle}
-                
             </div>
         );
 
@@ -482,15 +481,14 @@ export class RoomTile extends React.PureComponent<ClassProps, State> {
                             />
                             {titleContainer}
                             {badge}
-                            {/* tangoun */}
-                            {/* {this.renderGeneralMenu()} */}
-                            {/* {this.renderNotificationsMenu(isActive)} */}
+                            {this.renderGeneralMenu()}
+                            {this.renderNotificationsMenu(isActive)}
                         </AccessibleButton>
                     )}
                 </RovingTabIndexWrapper>
             </React.Fragment>
         );
-    } 
+    }
 }
 
 const RoomTileHOC: React.FC<Props> = (props: Props) => {
