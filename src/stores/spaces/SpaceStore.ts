@@ -72,6 +72,7 @@ const metaSpaceOrder: MetaSpace[] = [
     MetaSpace.Favourites,
     MetaSpace.People,
     MetaSpace.Orphans,
+    MetaSpace.SelfChat,
     MetaSpace.VideoRooms,
 ];
 
@@ -647,6 +648,13 @@ export class SpaceStoreClass extends AsyncStoreWithClient<IState> {
             this.roomIdsBySpace.delete(MetaSpace.Favourites);
         }
 
+        if (enabledMetaSpaces.has(MetaSpace.SelfChat)) {
+            const favourites = visibleRooms.filter((r) => r.tags[DefaultTagID.Favourite]); //tangoun
+            this.roomIdsBySpace.set(MetaSpace.SelfChat, new Set(favourites.map((r) => r.roomId)));
+        } else {
+            this.roomIdsBySpace.delete(MetaSpace.SelfChat);
+        }
+
         // The People metaspace doesn't need maintaining
 
         // Populate the orphans space if the Home space is enabled as it is a superset of it.
@@ -1101,6 +1109,10 @@ export class SpaceStoreClass extends AsyncStoreWithClient<IState> {
             this.emit(MetaSpace.People);
         }
 
+        if (enabledMetaSpaces.has(MetaSpace.SelfChat)) {
+            this.emit(MetaSpace.SelfChat);
+        }
+
         if (enabledMetaSpaces.has(MetaSpace.Orphans) || enabledMetaSpaces.has(MetaSpace.Home)) {
             if (isDm && this.roomIdsBySpace.get(MetaSpace.Orphans)?.delete(room.roomId)) {
                 this.emit(MetaSpace.Orphans);
@@ -1197,6 +1209,8 @@ export class SpaceStoreClass extends AsyncStoreWithClient<IState> {
         PosthogAnalytics.instance.setProperty("WebMetaSpacePeopleEnabled", enabled.has(MetaSpace.People));
         PosthogAnalytics.instance.setProperty("WebMetaSpaceFavouritesEnabled", enabled.has(MetaSpace.Favourites));
         PosthogAnalytics.instance.setProperty("WebMetaSpaceOrphansEnabled", enabled.has(MetaSpace.Orphans));
+        PosthogAnalytics.instance.setProperty("WebMetaSpaceFavouritesEnabled", enabled.has(MetaSpace.SelfChat)); 
+        //tangoun User Property of Selfchat Same as Favourite
     }
 
     private goToFirstSpace(contextSwitch = false): void {

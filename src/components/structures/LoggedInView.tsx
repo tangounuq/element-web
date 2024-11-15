@@ -6,6 +6,22 @@ SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only
 Please see LICENSE files in the repository root for full details.
 */
 
+//tangoun
+import UserIcon from "@vector-im/compound-design-tokens/icons/user.svg";
+import ChatIcon from "@vector-im/compound-design-tokens/icons/chat.svg";
+import FavouriteIcon from "@vector-im/compound-design-tokens/icons/favourite.svg";
+import GroupIcon from "../../_extra_assets/group.svg";
+import FolderIcon from "../../_extra_assets/folder-love-2.svg";
+
+import { 
+    MetaSpace,   
+} from "../../stores/spaces";
+import AccessibleButton, { ButtonEvent } from "../views/elements/AccessibleButton";
+import { _t } from "../../languageHandler";
+import SettingIcon from "@vector-im/compound-design-tokens/icons/settings.svg";
+import SpaceStore from "../../stores/spaces/SpaceStore";
+//--
+
 import React, { ClipboardEvent } from "react";
 import {
     ClientEvent,
@@ -660,6 +676,38 @@ class LoggedInView extends React.Component<IProps, IState> {
         this._roomView.current?.handleScrollKey(ev);
     };
 
+    //tangoun - already enable in Settings.tsx
+    // private enableVideoRooms(): void {
+    //     console.log("Enabling MetaSpace.VideoRooms...");
+    //     SettingsStore.setValue("Spaces.enabledMetaSpaces", null, SettingLevel.DEVICE, {
+    //         [MetaSpace.Home]: true,
+    //         [MetaSpace.Favourites]: true,
+    //         [MetaSpace.People]: true,
+    //         [MetaSpace.Orphans]: true, // Enable Orphans
+    //         [MetaSpace.VideoRooms]: true, // Enable VideoRooms
+    //     });
+    // }
+    private onSettingsClick = (): void => {
+        dis.fire(Action.ViewUserSettings);
+    };
+    private onClickFavourite = (): void => {
+        SpaceStore.instance.setActiveSpace(MetaSpace.Favourites);
+    };
+    private onClickChat = (): void => {
+        SpaceStore.instance.setActiveSpace(MetaSpace.Home);
+    };
+    private onClickPeople = (): void => {
+        SpaceStore.instance.setActiveSpace(MetaSpace.People);
+    };
+    private onClickGroup = (): void => {
+        //this.enableVideoRooms(); // Enable VideoRooms before switching
+        SpaceStore.instance.setActiveSpace(MetaSpace.Orphans);
+    };
+    private onClickSelfChat = (): void => {
+        SpaceStore.instance.setActiveSpace(MetaSpace.SelfChat);
+   
+    };
+
     public render(): React.ReactNode {
         let pageElement;
 
@@ -719,7 +767,8 @@ class LoggedInView extends React.Component<IProps, IState> {
                             <LeftPanelLiveShareWarning isMinimized={this.props.collapseLhs || false} />
                             <div className="mx_LeftPanel_wrapper">
                                 <BackdropPanel blurMultiplier={0.5} backgroundImage={this.state.backgroundImage} />
-                                <SpacePanel />
+                                {/* <SpacePanel /> */}
+                                {/* tangoun */}
                                 <BackdropPanel backgroundImage={this.state.backgroundImage} />
                                 <div
                                     className="mx_LeftPanel_wrapper--user"
@@ -731,6 +780,84 @@ class LoggedInView extends React.Component<IProps, IState> {
                                         isMinimized={this.props.collapseLhs || false}
                                         resizeNotifier={this.props.resizeNotifier}
                                     />
+                                    {/* tangoun--Left display */}
+                                    {/* tangoun */}
+                                    <div className="icon-bar">  
+                                        <AccessibleButton   
+                                            onClick={this.onClickPeople}
+                                            title={_t("common|go_to_settings")}
+                                        >
+                                            <img src={UserIcon} alt="Chat" className="icon-svg" />
+                                        </AccessibleButton>
+                                        <AccessibleButton   
+                                            onClick={this.onClickGroup}
+                                            title={_t("common|go_to_settings")}
+                                        >
+                                            <img src={GroupIcon} alt="Group" style={{height: 26}} className="icon-svg" />
+                                        </AccessibleButton>
+                                        
+                                        <AccessibleButton   
+                                            onClick={this.onClickFavourite}
+                                            title={_t("common|go_to_settings")}
+                                        >
+                                            <img src={FavouriteIcon} alt="Chat" className="icon-svg" />
+                                        </AccessibleButton>
+                                        
+                                        <AccessibleButton   
+                                            onClick={this.onClickSelfChat}
+                                            title={_t("common|self_chat")}
+                                        >
+                                            <img src={FolderIcon} alt="Self Chat" style={{height: 26}} className="icon-svg" />
+                                        </AccessibleButton>
+                                        <AccessibleButton   
+                                            onClick={this.onClickChat}
+                                            title={_t("common|go_to_settings")}
+                                        >
+                                            <img src={ChatIcon} alt="Chat" className="icon-svg" />
+                                        </AccessibleButton>
+                                        
+                                        <AccessibleButton   
+                                            onClick={this.onSettingsClick}
+                                            title={_t("common|go_to_settings")}
+                                        >
+                                            <img src={SettingIcon} alt="User Icon" className="icon-svg" />
+                                        </AccessibleButton>
+
+                                    </div>
+                                    {/* tanogun-Inline CSS Styles */}
+                                    <style>
+                                        {`
+                                            .mx_LeftPanel_wrapper--user {
+                                                position: relative;
+                                                height: 100%; /* Ensures the panel takes full height */
+                                            }
+
+                                            .icon-bar {
+                                                position: absolute;
+                                                bottom: 0;
+                                                width: 100%; /* Ensures the icons span the panel width */
+                                                display: flex;
+                                                justify-content: space-evenly; /* Space icons evenly across the width */
+                                                padding: 10px 0;
+                                                background-color: white; /* Optional: Background color to match your design */
+                                            }
+
+                                            .icon-button {
+                                                background: none;
+                                                border: none;
+                                                outline: none;
+                                                cursor: pointer;
+                                                font-size: 24px; /* Adjust icon size */
+                                                color: gray;
+                                                transition: color 0.3s;
+                                            }
+
+                                            .icon-button:hover {
+                                                color: black;
+                                            }
+                                        `}
+                                    </style>
+                                    {/* ---- */}
                                 </div>
                             </div>
                         </div>

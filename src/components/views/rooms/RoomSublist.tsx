@@ -707,8 +707,11 @@ export default class RoomSublist extends React.Component<IProps, IState> {
                                         <span id={getLabelId(this.props.tagId)}>{this.props.label}</span>
                                     </AccessibleButton>
                                     {this.renderMenu()}
-                                    {this.props.isMinimized ? null : badgeContainer}
-                                    {this.props.isMinimized ? null : addRoomButton}
+
+                                    {/* {this.props.isMinimized ? null : badgeContainer} */}
+                                    {/* {this.props.isMinimized ? null : addRoomButton} */}
+
+                                    {/* tangoun */}
                                 </div>
                             </div>
                             {this.props.isMinimized ? badgeContainer : null}

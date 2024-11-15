@@ -203,6 +203,20 @@ const OrphansButton: React.FC<MetaSpaceButtonProps> = ({ selected, isPanelCollap
     );
 };
 
+const SelfChatButton: React.FC<MetaSpaceButtonProps> = ({ selected, isPanelCollapsed }) => {
+    return (
+        <MetaSpaceButton
+            spaceKey={MetaSpace.SelfChat}
+            className="mx_SpaceButton_orphans"
+            selected={selected}
+            isPanelCollapsed={isPanelCollapsed}
+            label={getMetaSpaceName(MetaSpace.SelfChat)}
+            notificationState={SpaceStore.instance.getNotificationState(MetaSpace.SelfChat)}
+            size="32px"
+        />
+    );
+};
+
 const VideoRoomsButton: React.FC<MetaSpaceButtonProps> = ({ selected, isPanelCollapsed }) => {
     return (
         <MetaSpaceButton
@@ -271,6 +285,7 @@ const metaSpaceComponentMap: Record<MetaSpace, typeof HomeButton> = {
     [MetaSpace.Favourites]: FavouritesButton,
     [MetaSpace.People]: PeopleButton,
     [MetaSpace.Orphans]: OrphansButton,
+    [MetaSpace.SelfChat]: SelfChatButton,
     [MetaSpace.VideoRooms]: VideoRoomsButton,
 };
 

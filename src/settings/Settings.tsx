@@ -1050,6 +1050,11 @@ export const SETTINGS: { [setting: string]: ISetting } = {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,
         default: {
             [MetaSpace.Home]: true,
+            //tangoun
+            [MetaSpace.Orphans]: true, //Enable Orphans by default- "People" and "Favourite" are enable in QuickSettingsButton.tsx
+            [MetaSpace.VideoRooms]: true, //Enable VideoRooms by default
+            [MetaSpace.SelfChat]: true, //Enable VideoRooms by default
+            //--
         },
     },
     "Spaces.showPeopleInSpace": {
