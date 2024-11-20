@@ -364,15 +364,14 @@ export default class LeftPanel extends React.Component<IProps, IState> {
             >
                 <RoomSearch isMinimized={this.props.isMinimized} />
 
-                {/* {dialPadButton} */}
-                {/* {rightButton} */}
+                {/* {dialPadButton}
+                {rightButton} */}
                 {/* tangoun */}
             </div>
         );
     }
 
     public render(): React.ReactNode {
-        console.log("Rendering LeftPanel with activeSpace:", this.state.activeSpace);
         const roomList = (
             <RoomList
                 onKeyDown={this.onKeyDown}
@@ -397,16 +396,13 @@ export default class LeftPanel extends React.Component<IProps, IState> {
         return (
             <div className={containerClasses}>
                 <div className="mx_LeftPanel_roomListContainer">
-                    
-                    {/* <label htmlFor="AppTitle" className="mx_AppTitleLabel">FMIS Chat</label> */}
-    
+                
                     {!this.props.isMinimized && <RoomListHeader onVisibilityChange={this.refreshStickyHeaders} />}
-                    {/* tangoun */}
 
-                    {shouldShowComponent(UIComponent.FilterContainer) && this.renderSearchDialExplore()}              
+                    {shouldShowComponent(UIComponent.FilterContainer) && this.renderSearchDialExplore()}
                     {/* {this.renderBreadcrumbs()} */}
-                    {/* tangoun - list contact horizontallly */}
-                    
+                    {/* tangoun */}
+                   
                     <UserOnboardingButton
                         selected={this.props.pageType === PageType.HomePage}
                         minimized={this.props.isMinimized}
@@ -422,16 +418,6 @@ export default class LeftPanel extends React.Component<IProps, IState> {
                             {roomList}
                         </div>
                     </nav>
-                    <style>
-                        {`
-                            .mx_AppTitleLabel {
-                                padding: 10px;
-                                font-size: 30px;
-                                color: #0d71b8;
-                                fontWeight: bold;
-                            }
-                        `}
-                    </style>
                 </div>
             </div>
         );

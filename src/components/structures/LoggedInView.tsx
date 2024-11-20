@@ -12,6 +12,10 @@ import ChatIcon from "@vector-im/compound-design-tokens/icons/chat.svg";
 import FavouriteIcon from "@vector-im/compound-design-tokens/icons/favourite.svg";
 import GroupIcon from "../../_extra_assets/group.svg";
 import FolderIcon from "../../_extra_assets/folder-love-2.svg";
+import Setting1Icon from "../../_extra_assets/setting1.svg";
+import Heart1Icon from "../../_extra_assets/heart1.svg";
+import Note1Icon from "../../_extra_assets/note1.svg";
+import User1Icon from "../../_extra_assets/user1.svg";
 
 import { 
     MetaSpace,   
@@ -676,17 +680,7 @@ class LoggedInView extends React.Component<IProps, IState> {
         this._roomView.current?.handleScrollKey(ev);
     };
 
-    //tangoun - already enable in Settings.tsx
-    // private enableVideoRooms(): void {
-    //     console.log("Enabling MetaSpace.VideoRooms...");
-    //     SettingsStore.setValue("Spaces.enabledMetaSpaces", null, SettingLevel.DEVICE, {
-    //         [MetaSpace.Home]: true,
-    //         [MetaSpace.Favourites]: true,
-    //         [MetaSpace.People]: true,
-    //         [MetaSpace.Orphans]: true, // Enable Orphans
-    //         [MetaSpace.VideoRooms]: true, // Enable VideoRooms
-    //     });
-    // }
+    //tangoun
     private onSettingsClick = (): void => {
         dis.fire(Action.ViewUserSettings);
     };
@@ -703,10 +697,9 @@ class LoggedInView extends React.Component<IProps, IState> {
         //this.enableVideoRooms(); // Enable VideoRooms before switching
         SpaceStore.instance.setActiveSpace(MetaSpace.Orphans);
     };
-    private onClickSelfChat = (): void => {
-        SpaceStore.instance.setActiveSpace(MetaSpace.SelfChat);
-   
-    };
+
+    
+    //----
 
     public render(): React.ReactNode {
         let pageElement;
@@ -753,6 +746,15 @@ class LoggedInView extends React.Component<IProps, IState> {
             return <AudioFeedArrayForLegacyCall call={call} key={call.callId} />;
         });
 
+        // tangoun
+        const openRoom = (roomId: string): void => {
+            dis.dispatch({
+                action: 'view_room',
+                room_id: roomId,
+            });
+        };
+        //tangoun
+
         return (
             <MatrixClientContextProvider client={this._matrixClient}>
                 <div
@@ -780,14 +782,13 @@ class LoggedInView extends React.Component<IProps, IState> {
                                         isMinimized={this.props.collapseLhs || false}
                                         resizeNotifier={this.props.resizeNotifier}
                                     />
-                                    {/* tangoun--Left display */}
                                     {/* tangoun */}
                                     <div className="icon-bar">  
                                         <AccessibleButton   
                                             onClick={this.onClickPeople}
                                             title={_t("common|go_to_settings")}
                                         >
-                                            <img src={UserIcon} alt="Chat" className="icon-svg" />
+                                            <img src={User1Icon} alt="Chat" style={{height: 24}} className="icon-svg" />
                                         </AccessibleButton>
                                         <AccessibleButton   
                                             onClick={this.onClickGroup}
@@ -800,27 +801,31 @@ class LoggedInView extends React.Component<IProps, IState> {
                                             onClick={this.onClickFavourite}
                                             title={_t("common|go_to_settings")}
                                         >
-                                            <img src={FavouriteIcon} alt="Chat" className="icon-svg" />
+                                            <img src={Heart1Icon} alt="Chat" style={{height: 24}}  className="icon-svg" />
                                         </AccessibleButton>
                                         
-                                        <AccessibleButton   
-                                            onClick={this.onClickSelfChat}
-                                            title={_t("common|self_chat")}
+                                         <AccessibleButton   
+                                            //onClick={this.onClickSelfChat}
+                                            onClick={() => openRoom('!FdHvwFqotzlKggDKIQ:fmischat.com')}
+                                            title={_t("common|go_to_settings")}
                                         >
-                                            <img src={FolderIcon} alt="Self Chat" style={{height: 26}} className="icon-svg" />
-                                        </AccessibleButton>
-                                        <AccessibleButton   
-                                            onClick={this.onClickChat}
+                                            <img src={Note1Icon} alt="Self Chat" style={{height: 26}} className="icon-svg" />
+                                        </AccessibleButton> 
+                                        
+                                        
+                                        {/* <AccessibleButton   
+                                           onClick={this.onClickChat}
                                             title={_t("common|go_to_settings")}
                                         >
                                             <img src={ChatIcon} alt="Chat" className="icon-svg" />
-                                        </AccessibleButton>
+                                        </AccessibleButton> */}
+                                        
                                         
                                         <AccessibleButton   
                                             onClick={this.onSettingsClick}
                                             title={_t("common|go_to_settings")}
                                         >
-                                            <img src={SettingIcon} alt="User Icon" className="icon-svg" />
+                                            <img src={Setting1Icon} alt="User Icon" style={{height: 24}} className="icon-svg" />
                                         </AccessibleButton>
 
                                     </div>

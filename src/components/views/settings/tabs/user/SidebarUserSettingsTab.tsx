@@ -43,7 +43,6 @@ export const onMetaSpaceChangeFactory =
                 MetaSpace.Favourites,
                 MetaSpace.People,
                 MetaSpace.Orphans,
-                MetaSpace.SelfChat,
                 MetaSpace.VideoRooms,
             ].indexOf(metaSpace),
         );
@@ -55,7 +54,6 @@ const SidebarUserSettingsTab: React.FC = () => {
         [MetaSpace.Favourites]: favouritesEnabled,
         [MetaSpace.People]: peopleEnabled,
         [MetaSpace.Orphans]: orphansEnabled,
-        [MetaSpace.SelfChat]: selfChatEnabled,
         [MetaSpace.VideoRooms]: videoRoomsEnabled,
     } = useSettingValue<Record<MetaSpace, boolean>>("Spaces.enabledMetaSpaces");
     const allRoomsInHome = useSettingValue<boolean>("Spaces.allRoomsInHome");
@@ -147,19 +145,6 @@ const SidebarUserSettingsTab: React.FC = () => {
                         </SettingsSubsectionText>
                         <SettingsSubsectionText>
                             {_t("settings|sidebar|metaspaces_orphans_description")}
-                        </SettingsSubsectionText>
-                    </StyledCheckbox>
-                    <StyledCheckbox
-                        checked={!!selfChatEnabled}
-                        onChange={onMetaSpaceChangeFactory(MetaSpace.SelfChat, "WebSettingsSidebarTabSpacesCheckbox")}
-                        className="mx_SidebarUserSettingsTab_checkbox"
-                    >
-                        <SettingsSubsectionText>
-                            <HashCircleIcon />
-                            {_t("common|self_chat")}
-                        </SettingsSubsectionText>
-                        <SettingsSubsectionText>
-                            {_t("common|self_chat")}
                         </SettingsSubsectionText>
                     </StyledCheckbox>
                     {SettingsStore.getValue("feature_video_rooms") && (

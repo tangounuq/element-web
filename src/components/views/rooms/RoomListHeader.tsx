@@ -401,15 +401,15 @@ const RoomListHeader: React.FC<IProps> = ({ onVisibilityChange }) => {
     }
 
     return (
-        <aside className="mx_RoomListHeader" aria-label={_t("room|context_menu|title")}>  
-            {/* <label htmlFor="AppTitle" className="mx_AppTitleLabel">FMIS Chat</label> */}
-            {contextMenuButton}
-            {/* tangoun */}
-            {pendingActionSummary ? (
+        <aside className="mx_RoomListHeader" aria-label={_t("room|context_menu|title")}>
+            {/* {contextMenuButton} */}
+            {/* {pendingActionSummary ? (
                 <Tooltip label={pendingActionSummary} isTriggerInteractive={false}>
                     <InlineSpinner />
                 </Tooltip>
-            ) : null}
+            ) : null} */}
+            <label htmlFor="AppTitle" className="mx_AppTitleLabel">FMIS Chat</label>
+
             {canShowPlusMenu && (
                 <ContextMenuTooltipButton
                     ref={plusMenuHandle}
@@ -420,7 +420,7 @@ const RoomListHeader: React.FC<IProps> = ({ onVisibilityChange }) => {
                 />
             )}
 
-            {contextMenu}
+            {/* {contextMenu} */}
             <style>
                 {`
                     .mx_AppTitleLabel {

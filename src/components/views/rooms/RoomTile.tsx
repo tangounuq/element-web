@@ -481,10 +481,9 @@ export class RoomTile extends React.PureComponent<ClassProps, State> {
                             />
                             {titleContainer}
                             {badge}
-
-                            {/* tangoun */}
                             {/* {this.renderGeneralMenu()} */}
                             {/* {this.renderNotificationsMenu(isActive)} */}
+                            {/* tangoun */}
                         </AccessibleButton>
                     )}
                 </RovingTabIndexWrapper>
