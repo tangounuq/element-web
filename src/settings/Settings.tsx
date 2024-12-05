@@ -1049,11 +1049,7 @@ export const SETTINGS: { [setting: string]: ISetting } = {
     "Spaces.enabledMetaSpaces": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,
         default: {
-            //tangoun
             [MetaSpace.Home]: true,
-            [MetaSpace.Orphans]: true,
-            [MetaSpace.VideoRooms]: true,
-            //--
         },
     },
     "Spaces.showPeopleInSpace": {

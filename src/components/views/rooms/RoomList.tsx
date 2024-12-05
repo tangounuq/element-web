@@ -29,7 +29,7 @@ import { ITagMap } from "../../../stores/room-list/algorithms/models";
 import { DefaultTagID, TagID } from "../../../stores/room-list/models";
 import { UPDATE_EVENT } from "../../../stores/AsyncStore";
 import RoomListStore, { LISTS_UPDATE_EVENT } from "../../../stores/room-list/RoomListStore";
-import {
+import { 
     isMetaSpace,
     ISuggestedRoom,
     MetaSpace,
@@ -66,6 +66,7 @@ interface IProps {
     resizeNotifier: ResizeNotifier;
     isMinimized: boolean;
     activeSpace: SpaceKey;
+    spaceTab: String; //tangoun
 }
 
 interface IState {
@@ -582,6 +583,18 @@ export default class RoomList extends React.PureComponent<IProps, IState> {
             Object.values(RoomListStore.instance.orderedLists).every((list) => !list?.length);
 
         return TAG_ORDER.map((orderedTagId) => {
+            //tangoun
+            if(this.props.spaceTab == 'room' && orderedTagId !== DefaultTagID.Untagged){
+                return <div></div>;
+            }
+            if(this.props.spaceTab == 'people' && orderedTagId !== DefaultTagID.DM){
+                return <div></div>;
+            }
+            if(this.props.spaceTab == 'favor' && orderedTagId !== DefaultTagID.Favourite){
+                return <div></div>;
+            }
+            //tangoun
+            
             let extraTiles: ReactComponentElement<typeof ExtraTile>[] | undefined;
             if (orderedTagId === DefaultTagID.Suggested) {
                 extraTiles = this.renderSuggestedRooms();

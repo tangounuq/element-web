@@ -6,6 +6,17 @@ SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only
 Please see LICENSE files in the repository root for full details.
 */
 
+//tangoun
+import UserIcon from "@vector-im/compound-design-tokens/icons/user.svg";
+import ChatIcon from "@vector-im/compound-design-tokens/icons/chat.svg";
+import FavouriteIcon from "@vector-im/compound-design-tokens/icons/favourite.svg";
+import GroupIcon from "../../_extra_assets/group.svg";
+import FolderIcon from "../../_extra_assets/folder-love-2.svg";
+import Setting1Icon from "../../_extra_assets/setting1.svg";
+import Heart1Icon from "../../_extra_assets/heart1.svg";
+import Note1Icon from "../../_extra_assets/note1.svg";
+import User1Icon from "../../_extra_assets/user1.svg";
+
 import * as React from "react";
 import { createRef } from "react";
 import classNames from "classnames";
@@ -52,6 +63,7 @@ enum BreadcrumbsMode {
 interface IState {
     showBreadcrumbs: BreadcrumbsMode;
     activeSpace: SpaceKey;
+    spaceTab: String; //tangoun
 }
 
 export default class LeftPanel extends React.Component<IProps, IState> {
@@ -66,6 +78,7 @@ export default class LeftPanel extends React.Component<IProps, IState> {
         this.state = {
             activeSpace: SpaceStore.instance.activeSpace,
             showBreadcrumbs: LeftPanel.breadcrumbsMode,
+            spaceTab: '', //tangoun - default null 
         };
     }
 
@@ -364,12 +377,37 @@ export default class LeftPanel extends React.Component<IProps, IState> {
             >
                 <RoomSearch isMinimized={this.props.isMinimized} />
 
-                {/* {dialPadButton}
-                {rightButton} */}
-                {/* tangoun */}
+                {dialPadButton}
+                {rightButton}
             </div>
         );
     }
+
+    //tangoun
+    private onSettingsClick = (): void => {
+        dis.fire(Action.ViewUserSettings);
+    };
+    private onClickFavourite = (): void => {
+        //SpaceStore.instance.setActiveSpace(MetaSpace.Favourites);
+        this.setState({
+            spaceTab: "favor"
+        });
+    };
+    private onClickChat = (): void => {
+        SpaceStore.instance.setActiveSpace(MetaSpace.Home);
+    };
+    private onClickPeople = (): void => {
+        //SpaceStore.instance.setActiveSpace(MetaSpace.People);
+        this.setState({
+            spaceTab: "people"
+        });
+    };
+    private onClickGroup = (): void => {
+        this.setState({
+            spaceTab: "room"
+        });
+    };
+    //----
 
     public render(): React.ReactNode {
         const roomList = (
@@ -383,6 +421,7 @@ export default class LeftPanel extends React.Component<IProps, IState> {
                 onResize={this.refreshStickyHeaders}
                 onListCollapse={this.refreshStickyHeaders}
                 ref={this.roomListRef}
+                spaceTab={this.state.spaceTab} //tangoun
             />
         );
 
@@ -396,13 +435,9 @@ export default class LeftPanel extends React.Component<IProps, IState> {
         return (
             <div className={containerClasses}>
                 <div className="mx_LeftPanel_roomListContainer">
-                
-                    {!this.props.isMinimized && <RoomListHeader onVisibilityChange={this.refreshStickyHeaders} />}
-
                     {shouldShowComponent(UIComponent.FilterContainer) && this.renderSearchDialExplore()}
-                    {/* {this.renderBreadcrumbs()} */}
-                    {/* tangoun */}
-                   
+                    {this.renderBreadcrumbs()}
+                    {!this.props.isMinimized && <RoomListHeader onVisibilityChange={this.refreshStickyHeaders} />}
                     <UserOnboardingButton
                         selected={this.props.pageType === PageType.HomePage}
                         minimized={this.props.isMinimized}
@@ -418,7 +453,82 @@ export default class LeftPanel extends React.Component<IProps, IState> {
                             {roomList}
                         </div>
                     </nav>
+                    <div style={{ height: "50px" }}></div>
+                    {/* tangoun  */}
                 </div>
+                {/* tangoun */}
+                <div className="icon-bar">  
+                    <AccessibleButton   
+                        onClick={this.onClickPeople}
+                        title={_t("common|go_to_settings")}
+                    >
+                        <img src={User1Icon} alt="Chat" style={{height: 24}} className="icon-svg" />
+                    </AccessibleButton>
+                    <AccessibleButton   
+                        onClick={this.onClickGroup}
+                        title={_t("common|go_to_settings")}
+                    >
+                        <img src={GroupIcon} alt="Group" style={{height: 26}} className="icon-svg" />
+                    </AccessibleButton>
+                    
+                    <AccessibleButton   
+                        onClick={this.onClickFavourite}
+                        title={_t("common|go_to_settings")}
+                    >
+                        <img src={Heart1Icon} alt="Chat" style={{height: 24}}  className="icon-svg" />
+                    </AccessibleButton>
+
+                    <AccessibleButton   
+                        onClick={this.onClickChat}
+                        title={_t("common|go_to_settings")}
+                    >
+                        <img src={ChatIcon} alt="Chat" className="icon-svg" />
+                    </AccessibleButton>
+                    
+                    
+                    <AccessibleButton   
+                        onClick={this.onSettingsClick}
+                        title={_t("common|go_to_settings")}
+                    >
+                        <img src={Setting1Icon} alt="User Icon" style={{height: 24}} className="icon-svg" />
+                    </AccessibleButton>
+
+                </div>
+
+                {/* tanogun-Inline CSS Styles */}
+                <style>
+                    {`
+                        .mx_LeftPanel_wrapper--user {
+                            position: relative;
+                            height: 100%; /* Ensures the panel takes full height */
+                        }
+
+                        .icon-bar {
+                            position: absolute;
+                            bottom: 0;
+                            width: 100%; /* Ensures the icons span the panel width */
+                            display: flex;
+                            justify-content: space-evenly; /* Space icons evenly across the width */
+                            padding: 10px 0;
+                            background-color: white; /* Optional: Background color to match your design */
+                        }
+
+                        .icon-button {
+                            background: none;
+                            border: none;
+                            outline: none;
+                            cursor: pointer;
+                            font-size: 24px; /* Adjust icon size */
+                            color: gray;
+                            transition: color 0.3s;
+                        }
+
+                        .icon-button:hover {
+                            color: black;
+                        }
+                    `}
+                </style>
+                {/* ---- */}
             </div>
         );
     }
